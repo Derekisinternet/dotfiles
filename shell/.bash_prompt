@@ -9,57 +9,56 @@ if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/n
 fi;
 
 
-prompt_git() {
-    local s='';
-    local branchName='';
-    
-    # Check if the current directory is in a Git repository
-    if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
+git_info() {
+    local branchName=''
+    local s=''
+    local git_toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
 
-        # check if the current directory is in .git before running git checks
-        if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
-            # Ensure the index is up to date.
-            git update-index --really-refresh -q &>/dev/null;
-
-            # Check for uncommitted changes in the index.
-            if ! $(git diff --quiet --ignore-submodules --cached); then
-                s+='+';
-            fi;
+    # Am I in a git repo?
+    if [ -n "${git_toplevel}" ] && [ "${git_toplevel}" != "${HOME}" ]; then
         
-            # Check for unstaged changes.
-            if ! $(git diff-files --quiet --ignore-submodules --); then
-                s+='!';
-            fi;
-            # Check for untracked files.
-            if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-                s+='?'
-            fi;
-            # Check for stashed files.
-            if $(git rev-parse --verify refs/stash &>/dev/null); then
-                s+='$';
-            fi;
-        
-        fi;
+        local git_branch=$(git rev-parse --abbrev-ref HEADi 2>/dev/null)
 
-        # Get the short symbolic ref.
-        # If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
-    
-        # Otherwise, just give up.
-        branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
-            git rev-parse --short HEAD 2> /dev/null || \
-            echo '(unknown)')";
+        if [ -n "${git_branch}" ] && [ "${git_branch}" != 'master' ]; then
+            if [ "${git_branch}" == 'HEAD' ]; then
+                git_branch=$(git rev-parse --short HEAD 2>/dev/null)
+            fi
+            if [ -n "${git_branch}" ]; then
+                branchName="${git_branch}"
+            fi
+        fi
             
-        [ -n "${s}" ] && s=" [${s}]";
+        # Ensure the index is up to date.
+        git update-index --really-refresh -q &>/dev/null;
+
+        # Check for uncommitted changes in the index.
+        if ! $(git diff --quiet --ignore-submodules --cached); then
+            s+='+';
+        fi;
         
-        echo -e "${1}${branchName}${2}${s}";
-    else
-        return;
+        # Check for unstaged changes.
+        if ! $(git diff-files --quiet --ignore-submodules --); then
+            s+='!';
+        fi;
+        # Check for untracked files.
+        if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            s+='?'
+        fi;
+        # Check for stashed files.
+        if $(git rev-parse --verify refs/stash &>/dev/null); then
+            s+='$';
+        fi;
+        
     fi;
+            
+    [ -n "${s}" ] && s=" [${s}]";
+        
+    echo "| ${1}${branchName}${2}${s}";
 }
 
 
 # set the prompt string:
 PS1="\u@\h" # user @hostname
-PS1+="|$(prompt_git)" # git repo stuff
+PS1+="$(git_info)" # git repo stuff
 PS1+="\n\w$ " # working directory and prompt
 
