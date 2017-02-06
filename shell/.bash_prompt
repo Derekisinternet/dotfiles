@@ -70,7 +70,7 @@ git_info() {
 
 # set the prompt string:
 set_prompt() {
-    PS1="${GREEN}\u@\h" # user @hostname
+    PS1="${CYAN}\u@\h" # user @hostname
     PS1+="${MAGENTA}$(git_info)" # git repo stuff
     PS1+="${GREEN}\n\w$ " # working directory and prompt
 }
