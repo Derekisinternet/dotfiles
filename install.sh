@@ -21,3 +21,5 @@ REPO=$HOME/dotfiles
 
 link $REPO/.bash_profile ~
 link $REPO/.vimrc ~
+
+source $HOME/.bash_profile
