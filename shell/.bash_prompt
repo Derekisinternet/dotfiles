@@ -1,4 +1,16 @@
+#!/usr/bin/env/bash
+
 # Config for shell prompt
+
+# Color Definitions:
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+CYAN=$(tput setaf 6)
+MAGENTA=$(tput setaf 5)
+
+
 
 # Lotta stuf here was stolen from github.com/mathiasbynens/dotfiles
 
@@ -53,12 +65,15 @@ git_info() {
             
     [ -n "${s}" ] && s=" [${s}]";
         
-    echo "| ${1}${branchName}${2}${s}";
+    echo " | ${1}${branchName}${2}${s}";
 }
 
-
 # set the prompt string:
-PS1="\u@\h" # user @hostname
-PS1+="$(git_info)" # git repo stuff
-PS1+="\n\w$ " # working directory and prompt
+set_prompt() {
+    PS1="${GREEN}\u@\h" # user @hostname
+    PS1+="${MAGENTA}$(git_info)" # git repo stuff
+    PS1+="${GREEN}\n\w$ " # working directory and prompt
+}
+
+PROMPT_COMMAND=set_prompt
 
