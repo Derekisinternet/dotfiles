@@ -31,15 +31,15 @@ git_info() {
         
         local git_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
-        if [ -n "${git_branch}" ] && [ "${git_branch}" != 'master' ]; then
+        if [ -n "${git_branch}" ] && [ "${git_branch}" != "master" ]; then
             if [ "${git_branch}" == 'HEAD' ]; then
                 git_branch=$(git rev-parse --short HEAD 2>/dev/null)
-            fi
-            if [ -n "${git_branch}" ]; then
-                branchName="${git_branch}"
-            fi
+            fi        
         fi
-            
+
+        if [ -n "${git_branch}" ]; then
+            branchName="${git_branch}"
+        fi
         # Ensure the index is up to date.
         git update-index --really-refresh -q &>/dev/null;
 
