@@ -19,7 +19,12 @@ link() {
 
 REPO=$HOME/dotfiles
 
-link $REPO/.bash_profile ~
+link $REPO/.bashrc ~
 link $REPO/.vimrc ~
 
-source $HOME/.bash_profile
+# if for some reason there's no reference to .bashrc in .bash_profile, add a source" 
+if [ grep -q .bashrc $HOME/.bash_profile ==0 ]; then
+  echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
+fi
+
+source $HOME/.bashrc
