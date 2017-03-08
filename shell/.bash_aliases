@@ -2,8 +2,9 @@
 
 
 # ls aliases
+alias ls='ls --color'
 alias ll='ls -l'
 alias la='ls -A'
 
-alias re_profile='source ~/.bash_profile'
+alias re_dotfile='source ~/.bashrc'
 
