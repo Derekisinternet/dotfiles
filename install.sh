@@ -23,6 +23,8 @@ link $REPO/.bashrc ~
 link $REPO/.vimrc ~
 
 # if for some reason there's no reference to .bashrc in .bash_profile, add a source" 
-grep -q .bashrc $HOME/.bash_profile && echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
+if [ -f $HOME/.bash_profile ]; then
+    grep -q .bashrc $HOME/.bash_profile && echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
+fi
 
 source $HOME/.bashrc
