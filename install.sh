@@ -24,7 +24,12 @@ link $REPO/.vimrc ~
 
 # if for some reason there's no reference to .bashrc in .bash_profile, add a source" 
 if [ -f $HOME/.bash_profile ]; then
-    grep -q .bashrc $HOME/.bash_profile && echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
+    echo '~/.bash_profile found. Checking for reference to .bashrc . . .'
+    if [grep -q .bashrc $HOME/.bash_profile]; then
+        echo 'Found reference. Continuing . . .'
+    else
+        echo 'No reference found. Adding one . . .'
+        echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
 else
     # otherwise, create the file and append to it.
     echo "creating .bash_profile . . ."
