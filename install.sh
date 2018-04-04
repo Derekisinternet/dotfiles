@@ -12,7 +12,7 @@ link() {
     if [ -f $2/$file ] && [ ! -h $2/$file ]; then
       echo "backing up $2/$file ..."
       backup $2/$file 
-  fi
+    fi
   echo "creating link for $file at $2 ..."
   ln -sv $1 $2
 }
@@ -30,6 +30,7 @@ if [ -f $HOME/.bash_profile ]; then
     else
         echo 'No reference found. Adding one . . .'
         echo 'source $HOME/.bashrc' >> $HOME/.bash_profile
+    fi
 else
     # otherwise, create the file and append to it.
     echo "creating .bash_profile . . ."
