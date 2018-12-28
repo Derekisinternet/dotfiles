@@ -16,6 +16,6 @@ dgrep() {
      if [ -z "$1" ]; then
          echo "ERROR: no search criteria specified"
      else
-         grep -iRn $1 .
+         grep -iRn "$@" .
      fi    
 }
