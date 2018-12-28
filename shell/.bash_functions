@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
+
+# make a directory and cd to it in one go:
 mkgo() {
-    if [ "$1" = null ]; then
-        echo "Error: no folder name specified"
+    if [ -z "$1" ]; then
+        echo "ERROR: no folder name specified"
     else
         FOLDER=$1
+        mkdir $FOLDER
+        cd $FOLDER
     fi
+}
 
-    mkdir $FOLDER
-    cd $FOLDER
+# grep a directory instead of just one file:
+dgrep() {
+     if [ -z "$1" ]; then
+         echo "ERROR: no search criteria specified"
+     else
+         grep -iRn $1 .
+     fi    
 }
