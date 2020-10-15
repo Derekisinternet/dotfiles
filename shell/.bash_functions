@@ -23,7 +23,7 @@ dgrep() {
          else
             dir="$2"
          fi
-         grep -iRn "$1" "$dir"
+         grep -iIRn "$1" "$dir"
      fi    
 }
 
